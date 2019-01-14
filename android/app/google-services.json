@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "21863141412",
+    "firebase_url": "https://tip-off-b2bd7.firebaseio.com",
+    "project_id": "tip-off-b2bd7",
+    "storage_bucket": "tip-off-b2bd7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21863141412:android:003376a3a29b47fa",
+        "android_client_info": {
+          "package_name": "com.tip_off"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "21863141412-g112l43hgr31lgnq89ig5t8m6e13o024.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRJKkr9m5wwqIvf-W1AD886iIIf2sDO3Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
