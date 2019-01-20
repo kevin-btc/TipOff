@@ -8,7 +8,6 @@ import {
 	Alert
 } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
-import OneSignal from 'react-native-onesignal';
 
 import ip from '../Components/ip';
 import TipList from '../Components/TipList';
@@ -20,15 +19,9 @@ export default class Home extends React.Component {
 		super(props);
 		this.state = {
 			tip: [],
-			refreshing: false,
 			loading: true,
 		};
 		this._getAnswer = this._getAnswer.bind(this);
-
-		if (this.props.user.username !== undefined){
-			alert(String(this.props.user.username));
-			OneSignal.sendTag("username", this.props.user.username);
-		}
 	}
 
 	_getAnswer() {
@@ -37,13 +30,12 @@ export default class Home extends React.Component {
 				Alert.alert('No connect');
 				this.setState({
 					tip : this.props.cacheTip,
-					refreshing: false,
 					loading: false,
 				});
 				return ;
 			}
 		});
-		fetch(`${ip.ip}/api/messages?for=${this.props.user.username}`, {
+		fetch(`${ip.ip}/api/messages?for=${this.props.user.username}&id=${this.props.user.userId}`, {
 			method: 'GET',
 			headers: {
 				Accept: 'application/json',
@@ -53,7 +45,6 @@ export default class Home extends React.Component {
 			.then((responseJson) => {
 				this.setState({
 					tip : responseJson,
-					refreshing: false,
 					loading: false,
 				}, () => {
 					if (String(responseJson) !== String(this.props.cacheTip)){
@@ -80,16 +71,17 @@ export default class Home extends React.Component {
 	componentDidMount(){
 		this._getAnswer();
 	}
-	shouldComponentUpdate(nextProps, nextState) {
-		if(this.state.tip === nextState.tip &&
-       this.props.user === nextProps.user &&
-			 this.props.cacheTip === nextProps.cacheTip &&
-       this.props.loggin === nextProps.loggin
-		) {
-			return false;
-		}
-		return true;
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	if(this.state.tip === nextState.tip &&
+	// 		this.state.loading === nextState.loading &&
+  //      this.props.user === nextProps.user &&
+	// 		 this.props.cacheTip === nextProps.cacheTip &&
+  //      this.props.loggin === nextProps.loggin
+	// 	) {
+	// 		return false;
+	// 	}
+	// 	return true;
+	// }
 
 	render() {
 		console.log('Home');

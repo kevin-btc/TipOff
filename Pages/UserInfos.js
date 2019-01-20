@@ -2,9 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, ScrollView} from 'react-native';
 
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
-import { Card, ListItem} from 'react-native-elements';
-import { NavigationEvents } from 'react-navigation';
-
 
 import ip from '../Components/ip';
 import Avatar from '../Components/Avatar';
@@ -16,9 +13,7 @@ export default class UserTip extends React.Component {
 		super(props);
 		this.state = {
 			text: props.user.bio,
-			friendsInfos: []
 		};
-		this.getAllfriends === this.getAllfriends.bind(this);
 	}
 
 	_saveBio(bio, token) {
@@ -44,52 +39,11 @@ export default class UserTip extends React.Component {
 			});
 	}
 
-	_getProfileById(id, token, i) {
-		fetch(`${ip.ip}/api/users/${id}`, {
-			method: 'GET',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token
-			}
-		}).then((response) => response.json())
-			.then((responseJson) => {
-				let listFriends = this.state.friendsInfos;
-				if (listFriends === undefined || i === 0)
-					listFriends = new Array(0);
-				listFriends.push(responseJson);
-
-				this.setState({friendsInfos: listFriends});
-				console.log('_getProfileById', responseJson);
-				return responseJson;
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}
-
-	getAllfriends(){
-
-		const friends = this.props.user.friends !== null ? JSON.parse(this.props.user.friends) : [];
-		if (friends.length !== this.state.friendsInfos.length){
-			friends.map((item, i) => {
-				this._getProfileById(item, this.props.user.token, i);
-			});
-		}
-		if(friends.length === 0)
-			this.setState({friendsInfos: []});
-	}
-
-	componentWillMount(){
-		this.getAllfriends();
-	}
-
 	render() {
 		console.log('userInfo');
 		var regex = /\s{2,}/gi;
 		return (
 			<ScrollView style={styles.main_container}>
-				<NavigationEvents onDidFocus={() => {this.getAllfriends(); console.log('Mise a jour de Liste Amis');}} />
 				<View style={styles.avatar_container}>
 					<Avatar
 						user={this.props.user.username}
@@ -137,37 +91,6 @@ export default class UserTip extends React.Component {
 							}
 						}}
 					/>
-					<Text style={styles.titleTextInput}>{this.state.friendsInfos.length !== 0 ? 'Mes Tip\'r préférés :' : 'Mes Tip\'r préférés : Pas encore d\'ajout'}</Text>
-					<Card containerStyle={{marginHorizontal: 5, padding: 0}} >
-						{
-							this.state.friendsInfos.length !== 0 && this.state.friendsInfos.map((item, i) => {
-								return (
-									<ListItem
-										key={i}
-										bottomDivider={true}
-										title={item.username}
-										leftAvatar={{ rounded: true, source: { uri: `${ip.ip}/api/upload/${item.username}.jpg?avatar=true` } }}
-										chevronColor={COLOR_ACTIVE_TIPOFF}
-										chevron
-										onPress={() => this.props.navigation.navigate('OtherUser', {
-											me: {
-												username: this.props.user.username,
-												userId: this.props.user.userId,
-												token: this.props.user.token,
-												friends: this.props.user.friends
-
-											},
-											otherUser: {
-												UserId: item.id,
-												username: item.username,
-												bio: item.bio
-											}
-										})}
-									/>
-								);
-							})
-						}
-					</Card>
 				</View>
 			</ScrollView>
 		);

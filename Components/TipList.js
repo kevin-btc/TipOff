@@ -22,12 +22,6 @@ export default class TipList extends React.Component {
 			this.setState({refreshing: false});
 		});
 	}
-	shouldComponentUpdate(nextProps, nextState) {
-		if( this.props === nextProps) {
-			return false;
-		}
-		return true;
-	}
 
 	renderFooter = () => {
 		if (!this.state.footerloading) return null;

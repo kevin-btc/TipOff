@@ -185,8 +185,8 @@ class CreateTipAnswers extends React.Component {
 			},
 			body: JSON.stringify({
 				title: question.trim(),
-				content: JSON.stringify([content1, content2, content3, content4, heightImage, widthImage, this.state.numberOfPicture, {incognito: this.state.saveAnswer[0].incognito}, {public: this.state.saveAnswer[0].public}]),
-				attachment: JSON.stringify([{vote : 0}, {vote : 0}, {vote : 0}, {vote : 0}])
+				content: JSON.stringify([content1, content2, content3, content4, heightImage, widthImage, this.state.numberOfPicture, {incognito: this.state.saveAnswer[0].incognito}]),
+				attachment: JSON.stringify([{vote : 0}, {vote : 0}, {vote : 0}, {vote : 0}, {public: this.state.saveAnswer[0].public}])
 			}),
 		}).then((response) => response.json())
 			.then((responseJson) => {

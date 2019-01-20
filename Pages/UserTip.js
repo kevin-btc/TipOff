@@ -9,7 +9,6 @@ import {COLOR_ACTIVE_TIPOFF} from '../Components/utils';
 import Loading from '../Components/Loading';
 
 export default class UserTip extends React.Component {
-
 	constructor(props) {
 		super(props);
 		this.state = {

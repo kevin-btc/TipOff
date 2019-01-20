@@ -65,6 +65,7 @@ export default class TipItem extends React.Component {
 	render() {
 		const visible = this.state.visible;
 		const height = this.props.answer[0].sizePicture.height * width / this.props.answer[0].sizePicture.width;
+				console.log('this.props',this.props);
 		return (
 			visible === true &&
 			<View >
@@ -117,6 +118,8 @@ export default class TipItem extends React.Component {
 					avatar={this.props.avatar}
 					detailTip={this.props.detailTip}
 					activeDetailTip={this.state.activeDetailTip}
+					creatorTip={this.props.username}
+					idTip={this.props.item.id}
 				/>
 			</View>
 		);

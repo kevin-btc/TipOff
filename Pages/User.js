@@ -4,9 +4,12 @@ import { BackHandler, View} from 'react-native';
 import { connect } from 'react-redux';
 
 import UserInfos from './UserInfos';
+import Friends from './Friends';
 import getTheme from '../native-base-theme/components';
 import material from '../native-base-theme/variables/variables';
 import Connection from './Connection';
+
+import OneSignal from 'react-native-onesignal';
 
 import Loading from '../Components/Loading';
 
@@ -36,6 +39,7 @@ class User extends React.Component {
 
 	_isLoggin() {
 		if (this.props.loggin === true) {
+			OneSignal.sendTag('username', '');
 			this.props.dispatch({ type: 'IS_LOGGIN', value: {loggin: false}});
 			this.props.navigation.navigate('SwipeHome');
 			this.setState({loading: false});
@@ -87,6 +91,13 @@ class User extends React.Component {
 									user={this.props.user}
 									loggin={this.props.loggin}
 									dispatch={this.props.dispatch}
+									navigation={this.props.navigation}
+								/>
+							</Tab>
+							<Tab heading="Mes Tip'r">
+								<Friends
+									user={this.props.user}
+									loggin={this.props.loggin}
 									navigation={this.props.navigation}
 								/>
 							</Tab>

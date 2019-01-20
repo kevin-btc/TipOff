@@ -99,6 +99,8 @@ export default class TipItem extends React.Component {
 					avatar={this.props.avatar}
 					detailTip={this.props.detailTip}
 					activeDetailTip={this.state.activeDetailTip}
+					creatorTip={this.props.username}
+					idTip={this.props.item.id}
 				/>
 			</View>
 		);

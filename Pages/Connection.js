@@ -6,6 +6,8 @@ import {COLOR_ACTIVE_TIPOFF} from '../Components/utils';
 import Logo from '../Components/Logo';
 import Form from '../Components/Form';
 
+import OneSignal from 'react-native-onesignal';
+
 
 class Connection extends React.Component {
 	constructor(props) {
@@ -69,13 +71,22 @@ class Connection extends React.Component {
 			.then((responseJson) => {
 				if (responseJson.error === undefined) {
 					this.signup();
-					this.setState({messageValidation: 'Merci... 👌 Pour terminer la création de ton compte, je t\'invite à cliquer sur le lien 🔗 dans le mail que tu as recu ☺️'});
+					this.setState({
+						messageValidation: 'Merci... 👌 Pour terminer la création de ton compte, je t\'invite à cliquer sur le lien 🔗 dans le mail que tu as recu ☺️',
+						loading: false,
+					});
 				}
 				else {
-					this.setState({ messageError: responseJson.error});
+					this.setState({
+						messageError: responseJson.error,
+						loading: false,
+					});
 				}
 				if (responseJson.userId !== undefined){
-					this.setState({userId: responseJson.userId});
+					this.setState({
+						userId: responseJson.userId,
+						loading: false,	
+					});
 					this.sendMailVerifyAccount(responseJson.userId, mail.trim());
 				}
 				return false;
@@ -110,19 +121,28 @@ class Connection extends React.Component {
 			.then((responseJson) => {
 				if (responseJson.token && responseJson.userId && responseJson.isAdmin == 1) {
 					this._isLoggin(responseJson, mail);
-					if (this.props.noNavigate !== true)
+					OneSignal.sendTag('username', responseJson.username);
+					if (this.props.noNavigate !== true){
 						this.props.navigation.navigate(this.props.navigation.state.params.route);
+					}
 				} else if (responseJson.isAdmin == 0){
-					this.setState({ messageError: 'Oups... 🤔\nTu n\'as pas validé ton compte. Un mail viens de t\'etre renvoyé ! Il reste valide 1h...'});
+					this.setState({
+						messageError: 'Oups... 🤔\nTu n\'as pas validé ton compte. Un mail viens de t\'etre renvoyé ! Il reste valide 1h...',
+						loading: false,
+				});
 					this.sendMailVerifyAccount(this.state.userId, mail.trim());
 
 				} else
-					this.setState({ messageError: 'Oups... 🤔 ' + responseJson.error});
+					this.setState({
+						messageError: 'Oups... 🤔 ' + responseJson.error,
+						loading: false,
+					});
 				return false;
 			})
 			.catch((error) => {
 				this.handleLoading();
-				this.setState({ messageError: 'Oups... 🤔 Une erreur est survenu notre équipe y travaille'});
+				this.setState({
+					messageError: 'Oups... 🤔 Une erreur est survenu notre équipe y travaille'});
 				console.error(error);
 				return false;
 			});
